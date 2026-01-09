@@ -115,24 +115,35 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            set -e
+            
+            echo "🔄 Starting deployment..."
+            
+            # Login to GHCR (image is public after push)
+            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin || true
+            
             # Pull latest image
-            docker pull ghcr.io/anomali01/kalkulator-pengembangan-atp:latest
+            echo "📥 Pulling latest image..."
+            sudo docker pull ghcr.io/anomali01/kalkulator-pengembangan-atp:latest
             
             # Stop and remove existing container if exists
-            docker stop calculator-app || true
-            docker rm calculator-app || true
+            echo "🛑 Stopping old container..."
+            sudo docker stop calculator-app || true
+            sudo docker rm calculator-app || true
             
             # Run new container
-            docker run -d \
+            echo "🚀 Starting new container..."
+            sudo docker run -d \
               --name calculator-app \
               --restart unless-stopped \
               -p 80:80 \
               ghcr.io/anomali01/kalkulator-pengembangan-atp:latest
             
             # Cleanup old images
-            docker image prune -f
+            sudo docker image prune -f
             
             # Verify deployment
+            echo "✅ Verifying deployment..."
             sleep 5
             curl -f http://localhost:80 || exit 1
             echo "✅ Deployment successful!"
