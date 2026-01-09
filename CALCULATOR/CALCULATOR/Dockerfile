@@ -1,6 +1,9 @@
 # Use Nginx Alpine for lightweight static file serving
 FROM nginx:alpine
 
+# Remove default nginx content
+RUN rm -rf /usr/share/nginx/html/*
+
 # Copy static files to nginx html directory
 COPY index.html /usr/share/nginx/html/
 COPY style.css /usr/share/nginx/html/
