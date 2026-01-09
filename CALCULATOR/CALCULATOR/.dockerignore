@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+.gitkeep
+
+# Documentation
+README.md
+*.md
+
+# Docker
+Dockerfile
+.dockerignore
+
+# IDE
+.vscode
+.idea
+
+# GitHub
+.github
+
+# OS
+.DS_Store
+Thumbs.db

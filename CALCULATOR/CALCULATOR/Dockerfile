@@ -1,16 +1,18 @@
-# Menggunakan Nginx sebagai base image
+# Use Nginx Alpine for lightweight static file serving
 FROM nginx:alpine
 
-# Menghapus konfigurasi default Nginx
+# Remove default nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Menyalin semua file aplikasi ke direktori Nginx
+# Copy static files to nginx html directory
 COPY index.html /usr/share/nginx/html/
-COPY index.js /usr/share/nginx/html/
 COPY style.css /usr/share/nginx/html/
+COPY index.js /usr/share/nginx/html/
+COPY Calc.png /usr/share/nginx/html/
+COPY gif.gif /usr/share/nginx/html/
 
 # Expose port 80
 EXPOSE 80
 
-# Menjalankan Nginx
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
